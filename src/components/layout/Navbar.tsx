@@ -1,7 +1,7 @@
 'use client';
 
 import React, { useEffect, useState } from 'react';
-import { motion, AnimatePresence } from 'framer-motion';
+import { motion, AnimatePresence, LayoutGroup } from 'framer-motion';
 import { Menu, X, Volume2, VolumeX, ArrowUpRight } from 'lucide-react';
 import { Button } from '@/components/ui/Button';
 import { useSoundEffects } from '@/hooks/useSoundEffects';
@@ -80,29 +80,33 @@ export const Navbar: React.FC<NavbarProps> = ({ onOpenHireModal }) => {
           </a>
 
           {/* Desktop Navigation */}
-          <nav className="hidden lg:flex items-center gap-1 bg-[#181818]/60 border border-white/10 px-5 py-2 rounded-full backdrop-blur-md">
-            {NAV_LINKS.map((link) => {
-              const isActive = activeSection === link.href.substring(1);
-              return (
-                <a
-                  key={link.name}
-                  href={link.href}
-                  className={`relative px-4 py-2 text-xs font-semibold uppercase tracking-wider transition-colors duration-300 ${
-                    isActive ? 'text-white' : 'text-[#B5B5B5] hover:text-white'
-                  }`}
-                >
-                  {isActive && mounted && (
-                    <motion.span
-                      layoutId="activeNavTab"
-                      className="absolute inset-0 bg-[#FF3B30] rounded-full -z-10"
-                      transition={{ type: 'spring', stiffness: 380, damping: 30 }}
-                    />
-                  )}
-                  {link.name}
-                </a>
-              );
-            })}
-          </nav>
+          <LayoutGroup>
+            <nav className="hidden lg:flex items-center gap-1 bg-[#181818]/60 border border-white/10 px-5 py-2 rounded-full backdrop-blur-md">
+              {NAV_LINKS.map((link) => {
+                const isActive = activeSection === link.href.substring(1);
+                return (
+                  <a
+                    key={link.name}
+                    href={link.href}
+                    className={`relative px-4 py-2 text-xs font-semibold uppercase tracking-wider transition-colors duration-300 ${
+                      isActive ? 'text-white' : 'text-[#B5B5B5] hover:text-white'
+                    }`}
+                  >
+                    <AnimatePresence>
+                      {isActive && mounted && (
+                        <motion.span
+                          layoutId="activeNavTab"
+                          className="absolute inset-0 bg-[#FF3B30] rounded-full -z-10"
+                          transition={{ type: 'spring', stiffness: 380, damping: 30 }}
+                        />
+                      )}
+                    </AnimatePresence>
+                    {link.name}
+                  </a>
+                );
+              })}
+            </nav>
+          </LayoutGroup>
 
           {/* Right Action Controls */}
           <div className="hidden sm:flex items-center gap-4">
