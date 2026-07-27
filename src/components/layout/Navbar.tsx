@@ -21,12 +21,14 @@ const NAV_LINKS = [
 ];
 
 export const Navbar: React.FC<NavbarProps> = ({ onOpenHireModal }) => {
+  const [mounted, setMounted] = useState(false);
   const [isScrolled, setIsScrolled] = useState(false);
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
   const [activeSection, setActiveSection] = useState('hero');
   const { soundEnabled, toggleSound } = useSoundEffects();
 
   useEffect(() => {
+    setMounted(true);
     const handleScroll = () => {
       if (window.scrollY > 40) {
         setIsScrolled(true);
@@ -89,7 +91,7 @@ export const Navbar: React.FC<NavbarProps> = ({ onOpenHireModal }) => {
                     isActive ? 'text-white' : 'text-[#B5B5B5] hover:text-white'
                   }`}
                 >
-                  {isActive && (
+                  {isActive && mounted && (
                     <motion.span
                       layoutId="activeNavTab"
                       className="absolute inset-0 bg-[#FF3B30] rounded-full -z-10"
